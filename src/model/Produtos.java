@@ -4,8 +4,16 @@
  */
 package model;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import dao.DataSource;
+
 
 public class Produtos {
+    
     
     private int     idProduto;
     private String prod_categoria;
@@ -16,8 +24,54 @@ public class Produtos {
     private int idFornecedor;
     private int prod_quantidade;
     private int prod_minimo;
+    // variavel de datasource para a conexão
+    private DataSource dataSource;
     
     
+    
+    public ArrayList<Produtos> readAll() {
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    
+        try {
+            String SQL = "SELECT * FROM produtos";
+            ps = dataSource.getConnection().prepareStatement(SQL);
+            rs = ps.executeQuery();
+
+            ArrayList<Produtos> lista = new ArrayList<>();
+
+            while (rs.next()) {
+                Produtos prod = new Produtos();
+                prod.setIdProduto(rs.getInt("idProduto"));
+                prod.setProd_categoria(rs.getString("prod_categoria"));
+                prod.setProd_descricao(rs.getString("prod_descricao"));  // Corrigido o espaço extra
+                prod.setProd_validade(rs.getString("prod_validade"));
+                prod.setProd_preco_custo(rs.getDouble("prod_preco_custo"));
+                prod.setProd_preco_venda(rs.getDouble("prod_preco_venda"));
+                prod.setIdFornecedor(rs.getInt("idFornecedor"));
+                prod.setProd_quantidade(rs.getInt("prod_quantidade"));
+                prod.setProd_minimo(rs.getInt("prod_minimo"));
+
+                lista.add(prod);
+            }
+
+            return lista;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao recuperar dados: " + ex.getMessage());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Erro geral: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                dataSource.closeDataSource();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao fechar recursos: " + e.getMessage());
+            }
+        }
+
+        return null;
+    }
     
     /**
      * @return the idProduto

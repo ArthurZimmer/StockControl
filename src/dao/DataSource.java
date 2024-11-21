@@ -21,11 +21,11 @@ public class DataSource {
     public DataSource(){
         try{
             // seta valores nas variáveis de conexão
-            hostname = "192.168.20.3";
+            hostname = "127.0.0.1";
             porta = 3306;
-            database = "testeprojeto";
+            database = "estoquealimentos2";
             username = "root";
-            password = "12345";
+            password = "";
             
             // string de conexão
             String url = "jdbc:mysql://"+hostname+":"+porta+"/"+database+"?useTimezone=true&serverTimezone=UTC";

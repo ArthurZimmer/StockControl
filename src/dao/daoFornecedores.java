@@ -12,21 +12,21 @@ import model.Fornecedores;
 public class daoFornecedores {
     
     // variavel de datasource para a conexão
-    private DataSource dataSource;
+    private final DataSource dataSource;
     
     // método construtor para passar o dataSource
     public daoFornecedores(DataSource dataSource){
         this.dataSource = dataSource;
     }
 
-    
+    //Falta parte do public Arraylist
      public ArrayList<Fornecedores> readAll(){
 
         //Connection con = dataSource.getConnection();
         PreparedStatement ps = null;
 
         try{
-            String SQL = "SELECT * FROM FORNECEDORES";
+            String SQL = "SELECT * FROM fornecedores";
             
             // para mandar como uma instrução, precisa usar o PreparedStatement
             // traduz o comando SQL para execução
